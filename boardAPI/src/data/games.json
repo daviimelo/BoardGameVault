@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "userId": "2",
+    "name": "Teste Dois",
+    "category": "12",
+    "players": "12",
+    "playTime": 12,
+    "status": "vendido",
+    "notes": "",
+    "createdAt": "2026-05-19T19:03:15.076Z",
+    "updatedAt": "2026-05-21T19:26:08.218Z"
+  },
+  {
+    "id": "3",
+    "userId": "2",
+    "name": "Teste",
+    "category": "teste",
+    "players": "11",
+    "playTime": 129,
+    "status": "jogando",
+    "notes": "adssada",
+    "createdAt": "2026-05-21T18:18:56.125Z",
+    "updatedAt": "2026-05-21T18:18:56.125Z"
+  },
+  {
+    "id": "4",
+    "userId": "2",
+    "name": "Teste",
+    "category": "Estrategia",
+    "players": "1-4",
+    "playTime": 120,
+    "status": "jogando",
+    "notes": "ADADA",
+    "createdAt": "2026-05-21T19:25:58.936Z",
+    "updatedAt": "2026-05-21T19:26:22.663Z"
+  }
+]

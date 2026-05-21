@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "Davi",
+    "email": "davi@teste.com",
+    "passwordHash": "$2b$10$G2axboM9RkFfGGMq7UO1V.ZvfkDG.K/f/ETIJj3iGEPNibE/lytoC"
+  },
+  {
+    "id": "2",
+    "name": "dab",
+    "email": "davi@gmail.com",
+    "passwordHash": "$2b$10$mB9Qyaqq7I38ibYkEjnfB.DtswrlU5KtC0QChsVCNzrsO46zJb7ZO"
+  },
+  {
+    "id": "3",
+    "name": "Davi",
+    "email": "davi123@gmail.com",
+    "passwordHash": "$2b$10$CPrqzpH7Ixi7bCldN1BCnOrDpBG.qfbXZIi6ND1ymj78JJEk39gRe"
+  },
+  {
+    "id": "4",
+    "name": "Luizao",
+    "email": "luiz@gmail.com",
+    "passwordHash": "$2b$10$MDsDvwYZ07NPsOWFHgl.keTqH95KKZecxYuuHl46Lunnpiy3zyWG6"
+  }
+]

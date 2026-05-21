@@ -1,0 +1,83 @@
+:root {
+    --bg-dark: #0a0b10;
+    --bg-panel: #13141c;
+    --brand-primary: #7c73e6;
+    --text-muted: #8b8d9b;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.branding-section {
+    background: linear-gradient(135deg, #1a153a 0%, var(--bg-dark) 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-section {
+    background-color: var(--bg-dark);
+}
+
+.text-primary {
+    color: var(--brand-primary) !important;
+}
+
+.text-light-opacity {
+    color: var(--text-muted);
+}
+
+.custom-input {
+    background-color: var(--bg-panel);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.custom-input:focus {
+    background-color: var(--bg-panel);
+    border-color: var(--brand-primary);
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(124, 115, 230, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-primary:hover {
+    background-color: #655cc9;
+    border-color: #655cc9;
+}
+
+.animate-enter {
+    animation: slideUpFade 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-input, .btn {
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(124, 115, 230, 0.15);
+}
+
+.branding-section h3 {
+    transition: color 0.3s ease;
+}
+
+.branding-section div:hover h3 {
+    color: var(--brand-primary);
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>BoardGame Vault - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            
+            <div class="col-md-6 d-none d-md-flex flex-column justify-content-center branding-section p-5">
+                <div class="brand-content text-white">
+                    <h4 class="mb-4 d-flex align-items-center">
+                        BoardGame Vault
+                    </h4>
+                    <h1 class="display-4 fw-bold mb-4">Seu catálogo. Sua<br>coleção. <span class="text-primary">Seus jogos.</span></h1>
+                    <p class="lead text-light-opacity">Organize cada jogo de tabuleiro que você desejar criar!</p>
+                    
+                    <div class="d-flex gap-5 mt-5">
+                        <div>
+                            <h3 class="fw-bold">500+</h3>
+                            <small class="text-light-opacity">títulos no catálogo</small>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold">4</h3>
+                            <small class="text-light-opacity">status por jogo</small>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold">∞</h3>
+                            <small class="text-light-opacity">campanhas</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center form-section p-5">
+                
+                <div id="login-container" class="form-wrapper mx-auto w-100" style="max-width: 400px;">
+                    <p class="text-uppercase text-primary fw-bold mb-1" style="font-size: 0.8rem;">Bem-vindo de volta</p>
+                    <h2 class="text-white fw-bold mb-2">Entre na sua conta</h2>
+                    <p class="text-light-opacity mb-4">Sua coleção te espera. Acesse para gerenciar seus jogos.</p>
+
+                    <form id="login-form">
+                        <div class="mb-3">
+                            <label class="form-label text-white">E-mail</label>
+                            <input type="email" class="form-control custom-input" id="login-email" placeholder="voce@exemplo.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-white">Senha</label>
+                            <input type="password" class="form-control custom-input" id="login-password" placeholder="********" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3 fw-bold">Entrar</button>
+                        <div class="text-center">
+                            <a href="#" id="btn-show-register" class="text-light text-decoration-none">Ainda não tem conta? <span class="text-primary">Cadastre-se</span></a>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="register-container" class="form-wrapper mx-auto w-100 d-none" style="max-width: 400px;">
+                    <p class="text-uppercase text-primary fw-bold mb-1" style="font-size: 0.8rem;">Crie sua conta</p>
+                    <h2 class="text-white fw-bold mb-2">Comece sua coleção</h2>
+                    <p class="text-light-opacity mb-4">Cadastre-se em segundos e mantenha seus jogos organizados em um só lugar.</p>
+
+                    <form id="register-form">
+                        <div class="mb-3">
+                            <label class="form-label text-white">Nome</label>
+                            <input type="text" class="form-control custom-input" id="register-name" placeholder="Seu nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white">E-mail</label>
+                            <input type="email" class="form-control custom-input" id="register-email" placeholder="voce@exemplo.com" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-4">
+                                <label class="form-label text-white">Senha</label>
+                                <input type="password" class="form-control custom-input" id="register-password" placeholder="********" required>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <label class="form-label text-white">Confirmar</label>
+                                <input type="password" class="form-control custom-input" id="register-confirm" placeholder="********" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3 fw-bold">Criar conta</button>
+                        <div class="text-center">
+                            <a href="#" id="btn-show-login" class="text-light text-decoration-none">Já tem conta? <span class="text-primary">Entrar</span></a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="login.js"></script>
+</body>
+</html>
