@@ -1,6 +1,6 @@
 import express from 'express';
 import { listGames, getGameDetail, createGame, updateGame, updateGameStatus, deleteGame, searchGames, getGameStats } from '../controllers/gamesController.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 

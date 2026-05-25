@@ -1,4 +1,5 @@
 import { register, login } from '../../shared/services/auth.js'; 
+import { exibirMensagem, limparMensagens } from '../../shared/utils/ui.js';
 
 const loginContainer = document.getElementById('login-container');
 const registerContainer = document.getElementById('register-container');
@@ -7,23 +8,28 @@ const btnShowLogin = document.getElementById('btn-show-login');
 const registerForm = document.getElementById('register-form');
 const loginForm = document.getElementById('login-form');
 
+// Troca de Telas (Login <-> Registro)
+function alternarTelas(esconder, mostrar) {
+    limparMensagens();
+    esconder.classList.add('d-none');
+    mostrar.classList.remove('d-none');
+    
+    mostrar.classList.remove('animate-enter');
+    void mostrar.offsetWidth;
+    mostrar.classList.add('animate-enter');
+}
+
 btnShowRegister.addEventListener('click', (e) => {
     e.preventDefault();
-    limparMensagens();
-    loginContainer.classList.add('d-none');
-    registerContainer.classList.remove('d-none');
-    registerContainer.classList.add('animate-enter');
+    alternarTelas(loginContainer, registerContainer);
 });
 
 btnShowLogin.addEventListener('click', (e) => {
     e.preventDefault();
-    limparMensagens();
-    registerContainer.classList.add('d-none');
-    loginContainer.classList.remove('d-none');
-    loginContainer.classList.add('animate-enter');
+    alternarTelas(registerContainer, loginContainer);
 });
 
-// Cadastro de Usuário
+// Cadastro
 registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     limparMensagens();
@@ -50,7 +56,7 @@ registerForm.addEventListener('submit', async (e) => {
 
         setTimeout(() => {
             btnShowLogin.click();
-        }, 5500);
+        }, 2000);
 
     } catch (error) {
         exibirMensagem('register-container', error.message || 'Erro ao realizar o cadastro.', 'danger');
@@ -90,22 +96,3 @@ loginForm.addEventListener('submit', async (e) => {
         btnSubmit.disabled = false;
     }
 });
-
-// Funções Auxiliares
-
-function exibirMensagem(containerId, texto, tipo) {
-    limparMensagens();
-    const container = document.getElementById(containerId);
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${tipo} alert-dismissible fade show mt-3 custom-alert`;
-    alertDiv.innerHTML = `
-        <span>${texto}</span>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-    `;
-    container.appendChild(alertDiv);
-}
-
-function limparMensagens() {
-    const alertas = document.querySelectorAll('.custom-alert');
-    alertas.forEach(alerta => alerta.remove());
-}

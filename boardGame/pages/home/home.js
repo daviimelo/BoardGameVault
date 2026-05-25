@@ -1,130 +1,78 @@
-import { getGames, getStats, createGame, updateGame, deleteGame, updateGameStatus } from '../../shared/services/games.js';
+import { getGames, getStats, createGame, updateGame, deleteGame, updateGameStatus, searchGames } from '../../shared/services/games.js';
+import { verificarAutenticacao, saudarUsuario, realizarLogout } from '../../shared/utils/auth.js';
+import { criarGameCard } from '../../shared/components/GameCard.js';
+import { criarStatCard } from '../../shared/components/StatCard.js';
+import { validarDadosDoJogo } from '../../shared/utils/validators.js';
 
+// Estados globais
 let jogosAtuais = []; 
 let jogoEmEdicaoId = null; 
 
-const token = localStorage.getItem('token');
-if (!token) window.location.href = '../login/index.html';
+// Verificar autenticação e saudar usuário
+verificarAutenticacao();
+saudarUsuario('saudacao-nome');
 
-try {
-    const userStr = localStorage.getItem('user');
-    if (userStr && userStr !== 'undefined') {
-        const user = JSON.parse(userStr);
-        if (user && user.name) {
-            document.getElementById('saudacao-nome').textContent = `Olá, ${user.name.split(' ')[0]}`;
-        }
-    }
-} catch (error) {
-    console.warn("Aviso: Não foi possível carregar o nome do usuário.", error);
-}
+document.getElementById('btn-logout').addEventListener('click', realizarLogout);
 
-document.getElementById('btn-logout').addEventListener('click', () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '../login/index.html';
-});
-
+// Estatísticas
 async function carregarEstatisticas() {
     const statsContainer = document.getElementById('stats-container');
     try {
         const data = await getStats();
         
-        statsContainer.innerHTML = `
-            <div class="stat-card stat-card-total">
-                <i class="bi bi-box-seam-fill stat-card-icon"></i>
-                <div class="stat-card-label">TOTAL</div>
-                <h3 class="stat-card-value">${data.total || 0}</h3>
-            </div>
-            
-            <div class="stat-card stat-card-jogando">
-                <i class="bi bi-controller stat-card-icon"></i>
-                <div class="stat-card-label">JOGANDO</div>
-                <h3 class="stat-card-value">${data.byStatus['jogando'] || 0}</h3>
-            </div>
-            
-            <div class="stat-card stat-card-zerado">
-                <i class="bi bi-trophy-fill stat-card-icon"></i>
-                <div class="stat-card-label">FINALIZADOS</div>
-                <h3 class="stat-card-value">${data.byStatus['zerado'] || 0}</h3>
-            </div>
-            
-            <div class="stat-card stat-card-wishlist">
-                <i class="bi bi-heart-fill stat-card-icon"></i>
-                <div class="stat-card-label">LISTA DE DESEJOS</div>
-                <h3 class="stat-card-value">${data.byStatus['quero jogar'] || 0}</h3>
-            </div>
-        `;
+        const cardsConfig = [
+            { label: 'TOTAL', value: data.total || 0, icon: 'box-seam-fill', type: 'total' },
+            { label: 'LISTA DE DESEJOS', value: data.byStatus['quero jogar'] || 0, icon: 'heart-fill', type: 'wishlist' },
+            { label: 'JOGANDO', value: data.byStatus['jogando'] || 0, icon: 'controller', type: 'jogando' },
+            { label: 'FINALIZADOS', value: data.byStatus['zerado'] || 0, icon: 'trophy-fill', type: 'zerado' },
+            { label: 'EMPRESTADOS', value: data.byStatus['emprestado'] || 0, icon: 'share-fill', type: 'emprestado' },
+            { label: 'VENDIDOS', value: data.byStatus['vendido'] || 0, icon: 'bag-check-fill', type: 'vendido' }
+        ];
+
+        statsContainer.innerHTML = cardsConfig.map(config => 
+            criarStatCard(config.label, config.value, config.icon, config.type)
+        ).join('');
+
     } catch (error) {
         console.error("Erro nas estatísticas:", error);
     }
 }
 
-async function carregarJogos() {
+// Renderização dos cards de jogos
+function renderizarCards(jogos) {
     const gamesContainer = document.getElementById('games-container');
+    gamesContainer.innerHTML = ''; 
+
+    if (jogos.length === 0) {
+        gamesContainer.innerHTML = `
+            <div class="col-12 empty-state">
+                <i class="bi bi-inboxes empty-state-icon"></i>
+                <p class="empty-state-text mb-4">Nenhum jogo encontrado.</p>
+            </div>
+        `;
+        gamesContainer.style.display = "block";
+        return;
+    }
+    
+    gamesContainer.style.display = "grid";
+
+    jogos.forEach((jogo, index) => {
+        const cardElement = criarGameCard(jogo, index);
+        gamesContainer.appendChild(cardElement);
+    });
+}
+
+async function carregarJogos() {
     try {
         const data = await getGames();
         jogosAtuais = data.games; 
-
-        gamesContainer.innerHTML = ''; 
-
-        if (jogosAtuais.length === 0) {
-            gamesContainer.innerHTML = `
-                <div class="col-12 empty-state">
-                    <i class="bi bi-inboxes empty-state-icon"></i>
-                    <p class="empty-state-text mb-4">Sua estante está vazia.</p>
-                </div>
-            `;
-            gamesContainer.style.display = "block";
-            return;
-        }
-        
-        gamesContainer.style.display = "grid";
-
-        jogosAtuais.forEach((jogo, index) => {
-            const statusBadgeClass = jogo.status.split(' ')[0]; 
-
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.style.animationDelay = `${index * 0.08}s`; 
-
-            card.innerHTML = `
-                <div class="game-card-header">
-                    <a href="../games/index.html?id=${jogo.id}" class="text-decoration-none text-white hover-primary">
-                        <h4 class="game-card-title text-truncate" title="${jogo.name}">${jogo.name}</h4>
-                    </a>
-                    <span class="game-card-badge game-card-badge-${statusBadgeClass}" 
-                          style="cursor: pointer;" title="Clique para alterar o status" 
-                          onclick="alternarStatus('${jogo.id}', '${jogo.status}')">
-                          ${jogo.status} <i class="bi bi-arrow-repeat ms-1"></i>
-                    </span>
-                </div>
-                
-                <p class="game-card-category">${jogo.category}</p>
-                
-                <div class="game-card-meta">
-                    <div class="game-card-meta-item">
-                        <i class="bi bi-people-fill"></i> ${jogo.players} jog.
-                    </div>
-                    <div class="game-card-meta-item">
-                        <i class="bi bi-stopwatch"></i> ${jogo.playTime ? jogo.playTime + ' min' : '--'}
-                    </div>
-                </div>
-
-                ${jogo.notes ? `<p class="game-card-notes">"${jogo.notes}"</p>` : ''}
-
-                <div class="game-card-actions">
-                    <button class="btn-action" onclick="abrirEdicao('${jogo.id}')"><i class="bi bi-pencil-square"></i> Editar</button>
-                    <button class="btn-action btn-action-delete" onclick="deletarJogo('${jogo.id}')"><i class="bi bi-trash3"></i></button>
-                </div>
-            `;
-            gamesContainer.appendChild(card);
-        });
+        renderizarCards(jogosAtuais);
     } catch (error) {
         console.error("Erro nos jogos:", error);
     }
 }
 
-window.alternarStatus = async (id, statusAtual) => {
+const alternarStatus = async (id, statusAtual) => {
     const ordemStatus = ['quero jogar', 'jogando', 'zerado', 'vendido', 'emprestado'];
     const indexAtual = ordemStatus.indexOf(statusAtual);
     const proximoStatus = ordemStatus[(indexAtual + 1) % ordemStatus.length];
@@ -138,7 +86,7 @@ window.alternarStatus = async (id, statusAtual) => {
     }
 };
 
-window.abrirEdicao = (id) => {
+const abrirEdicao = (id) => {
     const jogo = jogosAtuais.find(g => g.id === id);
     if (!jogo) return;
 
@@ -158,7 +106,36 @@ window.abrirEdicao = (id) => {
     modal.show();
 };
 
+const deletarJogo = async (id) => {
+    if (confirm('Tem certeza que deseja remover este jogo do seu cofre?')) {
+        try {
+            await deleteGame(id);
+            carregarEstatisticas();
+            carregarJogos();
+        } catch (error) {
+            alert('Erro ao excluir jogo: ' + error.message);
+        }
+    }
+};
 
+document.getElementById('games-container').addEventListener('click', (e) => {
+    const target = e.target.closest('[data-action]');
+    if (!target) return; 
+
+    const action = target.getAttribute('data-action');
+    const id = target.getAttribute('data-id');
+
+    if (action === 'status') {
+        const statusAtual = target.getAttribute('data-status');
+        alternarStatus(id, statusAtual);
+    } else if (action === 'edit') {
+        abrirEdicao(id);
+    } else if (action === 'delete') {
+        deletarJogo(id);
+    }
+});
+
+// Controle de formulário de criação/edição e sistema de busca
 document.querySelector('[data-bs-target="#modalNovoJogo"]').addEventListener('click', () => {
     jogoEmEdicaoId = null;
     document.querySelector('.modal-title').textContent = 'Adicionar novo jogo';
@@ -172,13 +149,25 @@ document.getElementById('form-novo-jogo').addEventListener('submit', async (e) =
     const msgContainer = document.getElementById('modal-mensagem');
     
     const gameData = {
-        name: document.getElementById('game-name').value,
-        category: document.getElementById('game-category').value,
+        name: document.getElementById('game-name').value.trim(),
+        category: document.getElementById('game-category').value.trim(),
         status: document.getElementById('game-status').value,
-        players: document.getElementById('game-players').value, 
+        players: document.getElementById('game-players').value.trim(), 
         playTime: document.getElementById('game-time').value || null,
-        notes: document.getElementById('game-notes').value
+        notes: document.getElementById('game-notes').value.trim()
     };
+
+    const erros = validarDadosDoJogo(gameData);
+    
+    if (erros.length > 0) {
+        msgContainer.innerHTML = `
+            <div class="alert alert-warning p-3 small mb-0" style="border-left: 4px solid var(--warning);">
+                <strong>Atenção! Faltam algumas informações:</strong><br>
+                ${erros.join('<br>')}
+            </div>
+        `;
+        return; 
+    }
 
     try {
         btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Salvando...';
@@ -192,8 +181,7 @@ document.getElementById('form-novo-jogo').addEventListener('submit', async (e) =
         }
         
         const modalElement = document.getElementById('modalNovoJogo');
-        let modal = bootstrap.Modal.getInstance(modalElement);
-        modal.hide();
+        bootstrap.Modal.getInstance(modalElement).hide();
         
         e.target.reset();
         jogoEmEdicaoId = null; 
@@ -202,24 +190,45 @@ document.getElementById('form-novo-jogo').addEventListener('submit', async (e) =
         carregarJogos();
 
     } catch (error) {
-        msgContainer.innerHTML = `<div class="alert alert-danger p-2 small">${error.message}</div>`;
+        msgContainer.innerHTML = `
+            <div class="alert alert-danger p-2 small mb-0">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> ${error.message}
+            </div>
+        `;
     } finally {
         btnSubmit.innerHTML = 'Salvar Jogo';
         btnSubmit.disabled = false;
     }
 });
 
-window.deletarJogo = async (id) => {
-    if (confirm('Tem certeza que deseja remover este jogo do seu cofre?')) {
-        try {
-            await deleteGame(id);
-            carregarEstatisticas();
-            carregarJogos();
-        } catch (error) {
-            alert('Erro ao excluir jogo: ' + error.message);
-        }
+// Sistema de busca e filtros
+document.getElementById('form-busca').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const params = new URLSearchParams();
+    ['name', 'category', 'status'].forEach(id => {
+        const val = document.getElementById(`search-${id}`).value.trim();
+        if (val) params.append(id, val);
+    });
+
+    const gamesContainer = document.getElementById('games-container');
+    
+    try {
+        gamesContainer.innerHTML = `<div class="col-12 text-center mt-5"><div class="spinner-border text-primary" role="status"></div></div>`;
+        const query = params.toString();
+        const data = query ? await searchGames(query) : await getGames();
+        
+        jogosAtuais = data.games;
+        renderizarCards(jogosAtuais);
+    } catch (error) {
+        gamesContainer.innerHTML = `<p class="text-danger ps-3 fade-in-up">Erro ao buscar jogos: ${error.message}</p>`;
     }
-};
+});
+
+document.getElementById('btn-limpar-busca').addEventListener('click', () => {
+    document.getElementById('form-busca').reset();
+    carregarJogos();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarEstatisticas();

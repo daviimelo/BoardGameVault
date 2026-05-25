@@ -34,7 +34,7 @@ export async function deleteGame(id) {
 }
 
 export async function searchGames(query) {
-  return api(`/games/search?q=${query}`, { method: 'GET' });
+  return api(`/games/search?${query}`, { method: 'GET' });
 }
 
 export async function getGameDetail(id) {

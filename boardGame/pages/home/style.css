@@ -214,21 +214,24 @@ header h2 {
 /* Cards e Estátisticas */
 
 #stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;       /* Permite quebra de linha em telas pequenas */
+    gap: 1rem;             /* Espaçamento leve para telas menores */
     margin-bottom: 3rem;
 }
 
 .stat-card {
+    flex: 1 1 150px; 
+    min-width: 150px; 
     background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(26, 27, 38, 0.5) 100%);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.25rem;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
 }
+
 .stat-card::before {
     content: '';
     position: absolute;
@@ -240,6 +243,7 @@ header h2 {
     border-radius: 50%;
     transition: all 0.3s ease;
 }
+
 .stat-card:hover {
     border-color: var(--border-color-hover);
     transform: translateY(-4px);
@@ -258,8 +262,9 @@ header h2 {
 .stat-card-jogando { --stat-color: var(--success); }
 .stat-card-zerado { --stat-color: var(--warning); }
 .stat-card-wishlist { --stat-color: var(--danger); }
+.stat-card-vendido { --stat-color: var(--info); }
+.stat-card-emprestado { --stat-color: var(--primary-light); }
 .stat-card-icon { color: var(--stat-color); filter: drop-shadow(0 0 8px rgba(124, 115, 230, 0.2)); }
-
 
 /* Grid dos Jogos */
 
@@ -281,6 +286,18 @@ header h2 {
     overflow: hidden;
     height: 100%;
 }
+
+.filtro-wrapper {
+    width: 100%;
+    max-width: 100%;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
 .game-card::before {
     content: '';
     position: absolute;
@@ -373,3 +390,21 @@ header h2 {
 }
 
 .game-card { animation: slideInUp 0.5s ease-out forwards; opacity: 0; }
+
+/* Ajuste para telas */
+
+@media (min-width: 1200px) {
+    .stat-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .stat-card-value {
+        font-size: 1.8rem;
+    }
+    .stat-card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
