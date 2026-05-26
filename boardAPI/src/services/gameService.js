@@ -1,29 +1,52 @@
 import { readJSON, writeJSON } from '../utils/jsonSalvar.js';
 import { paths } from '../config/paths.js';
 
+// Função auxiliar para verificar o intervalor de jogadores
+const verificaIntervaloJogadores = (jogadoresDoJogo, buscaJogadores) => {
+    if (!jogadoresDoJogo || !buscaJogadores) return false;
+
+    const numeroBuscado = parseInt(buscaJogadores);
+    if (isNaN(numeroBuscado)) return false;
+
+    const strJogadores = jogadoresDoJogo.toString().replace(/\s/g, '');
+    
+    let min = 0;
+    let max = Infinity;
+
+    if (strJogadores.includes('-')) {
+        const partes = strJogadores.split('-');
+        min = parseInt(partes[0]) || 0;
+        max = parseInt(partes[1]) || Infinity;
+    } else if (strJogadores.includes('+')) {
+        min = parseInt(strJogadores.replace('+', '')) || 0;
+    } else {
+        min = parseInt(strJogadores) || 0;
+        max = min; 
+    }
+
+    // Logica para pesquisar o intervalo de jogadores -> Se o usuário digitar 7 ele retorna true se o intervalo for 1-10
+    return numeroBuscado >= min && numeroBuscado <= max;
+};
+
 export const gameService = {
   /* Obter todos os jogos */
-
   getAll: async () => {
     return await readJSON(paths.games);
   },
 
   /* Obter jogos de um usuário específico */
-
   getByUserId: async (userId) => {
     const games = await readJSON(paths.games);
     return games.filter(game => game.userId === userId);
   },
 
   /* Obter jogo por ID */
-
   getById: async (id) => {
     const games = await readJSON(paths.games);
     return games.find(g => g.id === id);
   },
 
   /* Criar novo jogo */
-
   create: async (gameData) => {
     const games = await readJSON(paths.games);
 
@@ -41,7 +64,6 @@ export const gameService = {
   },
 
   /* Atualizar jogo */
-
   update: async (id, updates) => {
     const games = await readJSON(paths.games);
     const index = games.findIndex(g => g.id === id);
@@ -59,7 +81,6 @@ export const gameService = {
   },
 
   /* Deletar jogo */
-
   delete: async (id) => {
     const games = await readJSON(paths.games);
     const index = games.findIndex(g => g.id === id);
@@ -73,8 +94,8 @@ export const gameService = {
   },
 
   /* Buscar jogos com filtros */
-
   search: async (userId, filters = {}) => {
+
     let games = await gameService.getByUserId(userId);
 
     if (filters.name) {
@@ -90,9 +111,7 @@ export const gameService = {
     }
 
     if (filters.players) {
-      games = games.filter(g =>
-        g.players.toLowerCase().includes(filters.players.toLowerCase())
-      );
+      games = games.filter(g => verificaIntervaloJogadores(g.players, filters.players));
     }
 
     if (filters.status) {
@@ -119,7 +138,6 @@ export const gameService = {
   },
 
   /* Obter estatísticas dos jogos de um usuário */
-
   getStats: async (userId) => {
     const games = await gameService.getByUserId(userId);
 

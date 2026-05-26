@@ -10,5 +10,17 @@
     "notes": "ADADA",
     "createdAt": "2026-05-21T19:25:58.936Z",
     "updatedAt": "2026-05-25T18:51:15.363Z"
+  },
+  {
+    "id": "6",
+    "userId": "5",
+    "name": "Davi Jogo",
+    "category": "Estrategia",
+    "players": "1-10",
+    "playTime": 120,
+    "status": "jogando",
+    "notes": "",
+    "createdAt": "2026-05-26T16:28:42.591Z",
+    "updatedAt": "2026-05-26T16:28:42.591Z"
   }
 ]

@@ -22,5 +22,13 @@
     "name": "Luizao",
     "email": "luiz@gmail.com",
     "passwordHash": "$2b$10$MDsDvwYZ07NPsOWFHgl.keTqH95KKZecxYuuHl46Lunnpiy3zyWG6"
+  },
+  {
+    "id": "5",
+    "name": "HERBETH",
+    "email": "herberthferrer@gmail.com",
+    "passwordHash": "$2b$10$e32SrNhGDiRTrkfelrfQg.0cNJ2CzOf3JpbAi9phFMULbExSUsiG6",
+    "createdAt": "2026-05-26T16:27:30.957Z",
+    "updatedAt": "2026-05-26T16:27:30.957Z"
   }
 ]
