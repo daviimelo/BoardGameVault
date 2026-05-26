@@ -52,3 +52,14 @@ $ npm install
 
 # Inicie o servidor
 $ npm start
+
+### 2. Executando a Interface (Front-end)
+
+Como o projeto utiliza **JavaScript Modules** para manter o código organizado, é necessário rodar a aplicação através de um servidor local para evitar bloqueios de segurança do navegador (CORS).
+
+**Via VS Code (Recomendado)**
+1. Abra a pasta principal do front-end no VS Code.
+2. Instale a extensão **Live Server**.
+3. Navegue até a pasta `pages/login`.
+4. Clique com o botão direito no arquivo `index.html` e selecione **"Open with Live Server"**.
+5. A aplicação abrirá automaticamente no seu navegador (Geralmente na porta 5500).

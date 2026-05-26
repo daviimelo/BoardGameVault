@@ -62,16 +62,14 @@
                             style="color: #a0a0a8; letter-spacing: 1px; font-size: 0.8rem;">Filtrar Coleção</h6>
                     </div>
 
-                    <form id="form-busca" class="row g-3 align-items-center">
+                    <form id="form-busca" class="row g-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control custom-input py-2" id="search-name"
-                                placeholder="Nome do jogo">
+                            <input type="text" class="form-control custom-input py-2" id="search-name" placeholder="Nome do jogo (ex: Catan)">
                         </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control custom-input py-2" id="search-category"
-                                placeholder="Categoria">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control custom-input py-2" id="search-category" placeholder="Categoria (ex: Estratégia)">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <select class="form-select custom-input py-2 text-secondary" id="search-status">
                                 <option value="">Qualquer status</option>
                                 <option value="quero jogar">Quero jogar</option>
@@ -81,10 +79,20 @@
                                 <option value="emprestado">Emprestado</option>
                             </select>
                         </div>
-                        <div class="col-md-2 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary flex-grow-1 fw-bold py-2">Filtrar</button>
-                            <button type="button" id="btn-limpar-busca" class="btn btn-outline-secondary py-2 px-3"><i
-                                    class="bi bi-arrow-counterclockwise"></i></button>
+                        
+                        <div class="col-md-3">
+                            <input type="text" class="form-control custom-input py-2" id="search-players" placeholder="Nº Jogadores (Ex: 1-4)">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control custom-input py-2" id="search-playTime" placeholder="Tempo em min (Ex: 60)">
+                        </div>
+                        <div class="col-md-6 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1 fw-bold py-2">
+                                <i class="bi bi-funnel-fill me-1"></i> Filtrar
+                            </button>
+                            <button type="button" id="btn-limpar-busca" class="btn btn-outline-secondary py-2 px-3" title="Limpar Filtros">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
                         </div>
                     </form>
                 </div>

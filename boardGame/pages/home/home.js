@@ -206,7 +206,8 @@ document.getElementById('form-busca').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const params = new URLSearchParams();
-    ['name', 'category', 'status'].forEach(id => {
+    
+    ['name', 'category', 'status', 'players', 'playTime'].forEach(id => {
         const val = document.getElementById(`search-${id}`).value.trim();
         if (val) params.append(id, val);
     });

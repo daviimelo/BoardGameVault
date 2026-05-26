@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:3000'
 
 export async function api(path, options = {}) {
   const token = localStorage.getItem('token')
-
+  console.log("Enviando token:", token);
   const response = await fetch(`${API_URL}${path}`, {
     headers: {
       'Content-Type': 'application/json',
