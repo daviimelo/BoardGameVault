@@ -38,7 +38,7 @@ Antes de começar, você precisará ter o [Node.js](https://nodejs.org/) instala
 ### 1. Configurando a API (Back-end)
 ```bash
 # Clone este repositório
-$ git clone [https://github.com/daviimelo/BoardGameVault.git](https://github.com/daviimelo/BoardGameVault.git)
+$ git clone https://github.com/daviimelo/BoardGameVault.git
 
 # Acesse a pasta do projeto (Back-end)
 $ cd BoardGameVault/boardAPI
@@ -52,6 +52,7 @@ $ npm install
 
 # Inicie o servidor
 $ npm start
+```
 
 ### 2. Executando a Interface (Front-end)
 
