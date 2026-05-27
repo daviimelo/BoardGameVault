@@ -2,7 +2,7 @@
 
 O **BoardGame Vault** é uma aplicação web fullstack desenvolvida para colecionadores e entusiastas de jogos de tabuleiro. Ele permite o gerenciamento completo de uma ludoteca pessoal, oferecendo um painel interativo com estatísticas de jogo e controle de status de cada título.
 
-<img width="1902" height="939" alt="image" src="https://github.com/user-attachments/assets/398c38ee-a5b5-49ae-b314-e7663c5e8c40" />
+<img width="1902" height="939" alt="image" src="https://github.com/user-attachments/assets/ac23bf16-0216-4f73-be4a-95f0e9813169" />
 
 ## Funcionalidades
 
